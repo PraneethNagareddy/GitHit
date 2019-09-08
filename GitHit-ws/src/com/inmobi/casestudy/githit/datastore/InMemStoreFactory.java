@@ -1,6 +1,6 @@
 package com.inmobi.casestudy.githit.datastore;
 
-public class InMemStoreFactory implements StoreFactory{
+public class InMemStoreFactory implements DataStoreFactory{
 	
 	private static HistoryStore historyStore = new InMemHistoryStore();
 	private static UserStore userStore = new InMemUserStore();

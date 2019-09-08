@@ -9,6 +9,8 @@ import javax.servlet.FilterRegistration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 import com.inmobi.casestudy.githit.caching.CacheManager;
+import com.inmobi.casestudy.githit.datastore.DataStoreFactory;
+import com.inmobi.casestudy.githit.datastore.InMemStoreFactory;
 import com.inmobi.casestudy.githit.domain.User;
 import com.inmobi.casestudy.githit.rest.GitHitController;
 import com.inmobi.casestudy.githit.rest.LoginController;
@@ -26,22 +28,33 @@ public class GitHitApplication extends Application<Configuration>{
 	
 	@Override
 	public void run(Configuration configuration, Environment env) throws Exception {
+		
+		enableCORSForApplication(env);
+		setupApplicationCache(env);
+		DataStoreFactory dataStoreFactory = getDataStore(env);
+		final GitHitController gitHitController = new GitHitController(dataStoreFactory);
+		final LoginController loginController = new LoginController(dataStoreFactory);
+		env.jersey().register(gitHitController);
+		env.jersey().register(loginController);
+	}
+	
+	private void setupApplicationCache(Environment env) {
+		CacheManager.createCache("LOGGED_IN_USERS", User.class);
+		CacheManager.createCache("SEARCH_HISTORY", ArrayList.class);
+	}
+	
+	private void enableCORSForApplication(Environment env) {
 		final FilterRegistration.Dynamic cors =
 		        env.servlets().addFilter("CORS", CrossOriginFilter.class);
 
-		    // Configure CORS parameters
-		    cors.setInitParameter("allowedOrigins", "*");
-		    cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
-		    cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
-
-		    // Add URL mapping
-		    cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "*");
-		CacheManager.createCache("LOGGED_IN_USERS", User.class);
-		CacheManager.createCache("SEARCH_HISTORY", ArrayList.class);
-		final GitHitController gitHitController = new GitHitController();
-		final LoginController loginController = new LoginController();
-		env.jersey().register(gitHitController);
-		env.jersey().register(loginController);
+		cors.setInitParameter("allowedOrigins", "*");
+		cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
+		cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+		cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "*");
+	}
+	
+	private DataStoreFactory getDataStore(Environment env) {
+		return new InMemStoreFactory();
 	}
 	
 }

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.inmobi.casestudy.githit.caching.CacheManager;
-import com.inmobi.casestudy.githit.datastore.StoreFactory;
+import com.inmobi.casestudy.githit.datastore.DataStoreFactory;
 import com.inmobi.casestudy.githit.datastore.UserStore;
 import com.inmobi.casestudy.githit.domain.User;
 
@@ -16,7 +16,7 @@ public class AuthenticationService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
 	private UserStore userStore;
 	
-	public AuthenticationService( StoreFactory storeFactory) {
+	public AuthenticationService( DataStoreFactory storeFactory) {
 		this.userStore = storeFactory.getUserStore();
 	}
 	

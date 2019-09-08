@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.annotation.Timed;
 import com.inmobi.casestudy.githit.datastore.InMemStoreFactory;
-import com.inmobi.casestudy.githit.datastore.StoreFactory;
+import com.inmobi.casestudy.githit.datastore.DataStoreFactory;
 import com.inmobi.casestudy.githit.domain.JSONResponse;
 import com.inmobi.casestudy.githit.domain.LoginRequest;
 import com.inmobi.casestudy.githit.domain.LoginResponse;
@@ -30,9 +30,8 @@ public class LoginController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 	AuthenticationService authService;
-    public LoginController() {
-    		StoreFactory inMemStoreFactory = new InMemStoreFactory();
-    		authService = new AuthenticationService(inMemStoreFactory);
+    public LoginController(DataStoreFactory dataStoreFactory) {
+    		authService = new AuthenticationService(dataStoreFactory);
     }
 
 	@POST
