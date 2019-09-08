@@ -1,7 +1,7 @@
 package com.inmobi.casestudy.githit.rest;
 
+import com.inmobi.casestudy.githit.datastore.DataStoreFactory;
 import com.inmobi.casestudy.githit.datastore.InMemStoreFactory;
-import com.inmobi.casestudy.githit.datastore.StoreFactory;
 import com.inmobi.casestudy.githit.domain.HistoryRecord;
 import com.inmobi.casestudy.githit.domain.JSONResponse;
 import com.inmobi.casestudy.githit.services.AuthenticationService;
@@ -30,14 +30,15 @@ import org.slf4j.LoggerFactory;
 public class GitHitController {
     
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitHitController.class);
+	
 	GitHitService gitHitService;
 	AuthenticationService authService;
-    public GitHitController() {
-    		StoreFactory inMemStoreFactory = new InMemStoreFactory();
-    		gitHitService = new GitHitService(inMemStoreFactory);
-    		authService = new AuthenticationService(inMemStoreFactory);
+	
+    public GitHitController(DataStoreFactory dataStoreFactory) {
+    		gitHitService = new GitHitService(dataStoreFactory);
+    		authService = new AuthenticationService(dataStoreFactory);
     }
-    
+
     @GET
     @Path("/getDetails/{git_handle}")
     @Timed

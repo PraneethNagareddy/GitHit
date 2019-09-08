@@ -21,16 +21,19 @@ class SearchUserDetails extends Component{
 	    		.get(apiURL+self.state.handle+'?session_id='+localStorage.getItem('session_id'))
 	    		.then(function (response) {
 	    			console.log(response);
-	    			if(response.status != 200 
-	    					|| response.data.status != 200){
+	    			if(response.data.status
+	    					&& response.data.status != 200){
 	    				
 	    				alert("Unable to fetch details");
 	    				console.log("Unable to fetch details");
 	    			}
-	    			else {
+	    			else if(response.status == 200){
 	    				console.log("fetch successful");
 	    				self.setState({ userDetails: response.data });
 	    				self.props.onSearch();
+	    			}else{
+	    				alert("Unable to fetch details");
+	    				console.log("Unable to fetch details");
 	    			}
 	    		}).catch(function (error) {
 	    			console.log(error);

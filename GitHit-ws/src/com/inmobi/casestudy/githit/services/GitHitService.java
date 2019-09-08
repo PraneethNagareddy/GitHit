@@ -15,16 +15,15 @@ import org.json.simple.parser.JSONParser;
 
 import com.inmobi.casestudy.githit.caching.CacheManager;
 import com.inmobi.casestudy.githit.datastore.HistoryStore;
-import com.inmobi.casestudy.githit.datastore.StoreFactory;
+import com.inmobi.casestudy.githit.datastore.DataStoreFactory;
 import com.inmobi.casestudy.githit.domain.HistoryRecord;
-import com.inmobi.casestudy.githit.domain.User;
 
 public class GitHitService {
 
 	private static String SEARCH_HISTORY = "SEARCH_HISTORY";
 	private static String GIT_USERS_API_URL = "https://api.github.com/users/";
 	private HistoryStore historyStore; 
-	public GitHitService(StoreFactory storeFactory) {
+	public GitHitService(DataStoreFactory storeFactory) {
 		historyStore = storeFactory.getHistoryStore();
 	}
 	

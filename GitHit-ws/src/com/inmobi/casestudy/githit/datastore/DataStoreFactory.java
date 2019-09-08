@@ -1,6 +1,6 @@
 package com.inmobi.casestudy.githit.datastore;
 
-public interface StoreFactory {
+public interface DataStoreFactory {
 	HistoryStore getHistoryStore();
 	UserStore getUserStore();
 }
