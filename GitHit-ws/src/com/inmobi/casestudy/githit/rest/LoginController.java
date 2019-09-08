@@ -18,9 +18,11 @@ import org.slf4j.LoggerFactory;
 import com.codahale.metrics.annotation.Timed;
 import com.inmobi.casestudy.githit.datastore.InMemStoreFactory;
 import com.inmobi.casestudy.githit.datastore.StoreFactory;
+import com.inmobi.casestudy.githit.domain.JSONResponse;
 import com.inmobi.casestudy.githit.domain.LoginRequest;
 import com.inmobi.casestudy.githit.domain.LoginResponse;
 import com.inmobi.casestudy.githit.services.AuthenticationService;
+import com.inmobi.casestudy.githit.utils.GitHitUtils;
 
 @Path("/authenticate")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,23 +34,25 @@ public class LoginController {
     		StoreFactory inMemStoreFactory = new InMemStoreFactory();
     		authService = new AuthenticationService(inMemStoreFactory);
     }
-	
+
 	@POST
 	@Path("/login")
 	@Timed
 	@Consumes(MediaType.APPLICATION_JSON)
-    public LoginResponse logUserIn(LoginRequest request, @Context HttpServletResponse response) throws Exception {
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
-		String sessionId = authService.logUser(request.getEmailId(), request.getPassword());
-    		if("".equals(sessionId)) {
-    			response.setStatus(401);
-    			response.sendError(401, "Unauthorized");
-    			LOGGER.info("Unauthorized access attemot on id"+request.getEmailId());
-    		}
-		LoginResponse loginresponse = new LoginResponse();
-		loginresponse.setSessionId(sessionId);
-    		return loginresponse;
+    public JSONResponse logUserIn(LoginRequest request, @Context HttpServletResponse response) throws Exception {
+		GitHitUtils.enableCORS(response);
+		try {
+			String sessionId = authService.logUserIn(request.getEmailId(), request.getPassword());
+    			if("".equals(sessionId)) {
+    				LOGGER.info("Unauthorized access attemot on id"+request.getEmailId());
+    				return new JSONResponse(401,"Unauthorized access");
+    			}
+    			LoginResponse loginresponse = new LoginResponse();
+    			loginresponse.setSessionId(sessionId);
+    			return new JSONResponse(200, "Successfully logged in", loginresponse);
+		}catch(Exception e) {
+			return new JSONResponse(500, "Server Error");
+		}
     }
 	
 	

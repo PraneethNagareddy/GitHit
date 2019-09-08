@@ -2,16 +2,16 @@ package com.inmobi.casestudy.githit.datastore;
 
 public class DBStoreFactory implements StoreFactory{
 	
-	private static ProductStore productStore = new InMemProductStore();
-	private static UserStore userStore = new InMemUserStore();
+	private static HistoryStore historyStore = new DBHistoryStore();
+	private static UserStore userStore = new DBUserStore();
 	
-	@Override
-	public ProductStore getProductStore() {
-		return productStore;
-	}
-
 	@Override
 	public UserStore getUserStore() {
 		return userStore;
+	}
+
+	@Override
+	public HistoryStore getHistoryStore() {
+		return historyStore;
 	}
 }

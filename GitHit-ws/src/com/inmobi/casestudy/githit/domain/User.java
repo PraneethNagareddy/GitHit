@@ -7,15 +7,13 @@ public class User {
 	private String emailId;
 	private Date dateOfBirth;
 	private String encryptedPassword;
-	private boolean isAdmin;
 	
-	public User(String name, String emailId, Date dateOfBirth, String encryptedPassword, boolean isAdmin) {
+	public User(String name, String emailId, Date dateOfBirth, String encryptedPassword) {
 		super();
 		this.name = name;
 		this.emailId = emailId;
 		this.dateOfBirth = dateOfBirth;
 		this.encryptedPassword = encryptedPassword;
-		this.isAdmin = isAdmin;
 	}
 	public User(String name, String emailId, String encryptedPassword) {
 		super();
@@ -46,12 +44,5 @@ public class User {
 	}
 	public void setEncryptedPassword(String encryptedPassword) {
 		this.encryptedPassword = encryptedPassword;
-	}
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-	
+	}	
 }

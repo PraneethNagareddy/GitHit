@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
 "session_id"
 })
-public class LoginResponse {
+public class LoginResponse{
 
 	@JsonProperty("session_id")
 	private String sessionId;
@@ -26,5 +26,4 @@ public class LoginResponse {
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
 	}
-
 }
