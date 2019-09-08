@@ -52,4 +52,9 @@ public class HistoryRecord {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	@Override
+	public boolean equals(Object otherRecord) {
+		return this.id == ((HistoryRecord)otherRecord).getId();
+	}
 }
